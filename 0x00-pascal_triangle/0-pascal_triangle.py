@@ -1,6 +1,16 @@
 #!/usr/bin/python3
 """Contains Pascal Triangle generator function"""
-from math import factorial as fact
+
+
+def fact(num):
+    """calculates a factorial of a number"""
+    if num == 0 or num == 1:
+        return 1
+    res = 1
+    while (num > 1):
+        res *= num
+        num -= 1
+    return (res)
 
 
 def pascal_triangle(n):
