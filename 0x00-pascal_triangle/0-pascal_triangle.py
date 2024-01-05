@@ -20,7 +20,7 @@ def pascal_triangle(n):
     if n <= 0:
         return []
     pascal_triangle = []
-    for row in range(n + 1):
+    for row in range(n):
         row_list = []
         for k in range(row + 1):
             row_list.append(int(fact(row) / (fact(k) * fact(row - k))))
