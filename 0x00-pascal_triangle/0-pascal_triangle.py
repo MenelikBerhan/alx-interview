@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """Contains Pascal Triangle generator function"""
 
 
