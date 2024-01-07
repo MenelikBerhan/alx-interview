@@ -1,16 +1,5 @@
-#!/usr/bin/python3
+#!/usr/bin/python2
 """Contains Pascal Triangle generator function"""
-
-
-def fact(num):
-    """calculates a factorial of a number"""
-    if num == 0 or num == 1:
-        return 1
-    res = 1
-    while (num > 1):
-        res *= num
-        num -= 1
-    return (res)
 
 
 def pascal_triangle(n):
@@ -23,7 +12,12 @@ def pascal_triangle(n):
     for row in range(n):
         row_list = []
         for k in range(row + 1):
-            row_list.append(int(fact(row) / (fact(k) * fact(row - k))))
+            if k == 0 or k == row:
+                row_list.append(1)
+            else:
+                # C(n, k) = C(n-1, k-1) + C(n-1, k)
+                row_list.append(pascal_triangle[row - 1][k - 1] +
+                                pascal_triangle[row - 1][k])
         pascal_triangle.append(row_list)
 
     return (pascal_triangle)
@@ -36,9 +30,12 @@ That means the nth row of Pascal's triangle comprises the coefficients of the
 expanded expression of the polynomial (x + y)^n.
 
 The expansion of (x + y)^n is:
-(x + y)^n = a0x^n + a1x^(n-1)y + a2x^(n-2)y^2 + … + an-1xy^(n-1) + any^n
+(x + y)^n = a0 x^n + a1 x^(n-1)y + a2 x^(n-2)y^2 + … + an-1 xy^(n-1) + an y^n
 
 where the coefficients of the form ak (a0, a1 ... an) are precisely the numbers
 in the nth row of Pascal's triangle. This can be expressed as:
-    ak = (n k) = n!/(k! * (n-k)!)
+    ak = C(n, k) = n!/(k! * (n-k)!)
+
+TO AVOID OVERFLOW ERROR when calculating factorial use:
+    C(n, k) = C(n-1, k-1) + C(n-1, k)
 """
