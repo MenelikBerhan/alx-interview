@@ -38,10 +38,10 @@ def canUnlockAll(boxes: 'list[list]') -> bool:
         queue[0].add(next_box)
 
         # open box and take keys of boxes not visited sofar (not in queue[0])
-        new_keys = set(boxes[next_box]).difference(queue[0])
-        # new_keys = {
-        #     k for k in boxes[next_box] if k < boxes_len
-        #     }.difference(queue[0])
+        # new_keys = set(boxes[next_box]).difference(queue[0])
+        new_keys = {
+            k for k in boxes[next_box] if k < boxes_len
+            }.difference(queue[0])
         # print(f'new keys: {new_keys}')
 
         # add new keys to set of keys in queue and to set of keys found
