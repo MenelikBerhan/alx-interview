@@ -12,6 +12,8 @@ def canUnlockAll(boxes: 'list[list]') -> bool:
     Returns:
         bool: True if all boxes could be opened, else False.
     """
+    # if len(boxes) == 0:
+    #     return False
     # a list containg a set of opened boxes & a set of acquired keys
     queue = [{0}, set(k for k in boxes[0] if k != 0)]
 
