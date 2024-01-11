@@ -13,16 +13,16 @@ def canUnlockAll(boxes: 'list[list]') -> bool:
         bool: True if all boxes could be opened, else False.
     """
     if len(boxes) == 0:
-        return False
+        return True
     # a list containg a set of opened boxes & a set of acquired keys
-    queue = [{0}, set(k for k in boxes[0] if k != 0)]
+    queue = [{0}, set(k for k in boxes[0] if k != 0 and k < len(boxes))]
 
     # separate set of keys found. used to stop loop if all keys are found
     keys_found = {0}
     keys_found.update(boxes[0])
 
     boxes_len = len(boxes)
-
+    # all_keys = {k for k in range(boxes_len)}
     # loop as long as all boxes are not opened & there is unused key
     while len(queue[0]) != boxes_len and queue[1]:
         # print(f'keys_found:{keys_found}\nqueue:{queue}')
@@ -39,6 +39,9 @@ def canUnlockAll(boxes: 'list[list]') -> bool:
 
         # open box and take keys of boxes not visited sofar (not in queue[0])
         new_keys = set(boxes[next_box]).difference(queue[0])
+        # new_keys = {
+        #     k for k in boxes[next_box] if k < boxes_len
+        #     }.difference(queue[0])
         # print(f'new keys: {new_keys}')
 
         # add new keys to set of keys in queue and to set of keys found
