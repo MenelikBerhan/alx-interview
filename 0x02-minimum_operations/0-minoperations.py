@@ -23,7 +23,7 @@ def minOperations(n: int, operations_dict: 'dict[int, int]' = {}) -> int:
         return 0
 
     if n in operations_dict:
-        print(f'returned from dict for n:{n}, {operations_dict}')
+        # print(f'returned from dict for n:{n}, {operations_dict}')
         return operations_dict[n]
 
     """ if n = k * m for integers k & m, then to reach n, first: reach k,
