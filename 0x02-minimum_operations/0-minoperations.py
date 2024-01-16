@@ -31,20 +31,19 @@ def minOperations(n: int, operations_dict: 'dict[int, int]' = {}) -> int:
     minOperations(k) to reach k, then (1 + (m-1)) = m operations to reach n
     minOperations(n) = minOperations(k) + m """
 
-    # first find higest k (1 < k < (n//2)) that satisfies n = k * m
-    k = 2
-    mid_n = n // 2
-    k_max = 0       # highest divisor of n (less than half of n)
-    while (k < mid_n):
+    # first find higest k (1 < k <= (n//2)) that satisfies n = k * m
+    # start from n//2 and go down to find k
+    k = n // 2
+    while (k > 1):
         if n % k == 0:
-            k_max = k
-        k += 1
+            break
+        k -= 1
 
     # print(f'after loop: n={n}, kmax={k_max}')
-    if k_max:
-        minOperations_k = minOperations(k_max, operations_dict)
-        operations_dict[n] = minOperations_k + n // k_max
-        return (minOperations_k + n // k_max)
+    if k != 1 and n % k == 0:
+        minOperations_k = minOperations(k, operations_dict)
+        operations_dict[n] = minOperations_k + n // k
+        return (minOperations_k + n // k)
 
     # n is a prime number, miOperations(n) = miOperations(1) + n = n
     operations_dict[n] = n
