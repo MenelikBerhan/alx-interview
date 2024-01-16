@@ -19,7 +19,7 @@ def minOperations(n: int, operations_dict: 'dict[int, int]' = {}) -> int:
             to achieve, returns `0`.
     """
     # print(f'Start: n={n}, dict: {operations_dict}')
-    if n <= 1:
+    if type(n) != int or n <= 1:
         return 0
 
     if n in operations_dict:
