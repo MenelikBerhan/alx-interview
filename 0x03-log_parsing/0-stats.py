@@ -20,7 +20,7 @@ status codes will be printed in ascending order"""
 import sys
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
     request = '"GET /projects/260 HTTP/1.1"'
     try:
@@ -91,6 +91,9 @@ if __name__ == 'main':
             print(f'{s}: {stat[s]}')
         raise e
 
+    # except BrokenPipeError:
+    #     # Handle BrokenPipeError gracefully
+    #     pass
     # pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - ' +\
     #             r'\[\d{4}-[0-1]{1}[0-2]{1}-[0-3]{1}\d{1} ' +\
     #             r'[0-2]{1}\d{1}:[0-5]{1}\d{1}:[0-5]{1}\d{1}.\d{6}\] ' +\
