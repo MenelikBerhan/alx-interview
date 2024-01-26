@@ -1,21 +1,23 @@
 #!/usr/bin/python3
-"""A script that reads stdin line by line and computes metrics:
+"""
+A script that reads stdin line by line and computes metrics:
 
 Input format:
 <IP Address> - [<date>] "GET /projects/260 HTTP/1.1" <status code> <file size>
-(if the format is not this one, the line will be skipped)
+(if the format is not this one, the line will be skipped).
 
-After every 10 lines and/or a keyboard interruption (CTRL + C), prints these
-statistics from the beginning:
-    Total file size: File size: <total size>
+After every 10 lines (including invalid ones) and/or a keyboard interruption
+(CTRL + C), prints these statistics from the beginning:
+    Total file size:
+    format: `File size: <total size>`
     where <total size> is the sum of all previous <file size>
 
     Number of lines by status code:
-    possible status code: 200, 301, 400, 401, 403, 404, 405 and 500
-
-If a status code doesn't appear or is not an integer, nothing is printed for it
-    format: <status code>: <number>
-status codes will be printed in ascending order"""
+    format: `<status code>: <number>`
+    possible status codes: 200, 301, 400, 401, 403, 404, 405 and 500
+    If a status code doesn't appear or is not an integer, nothing is
+    printed for it. Status codes will be printed in ascending order.
+"""
 import re
 import sys
 
@@ -30,10 +32,11 @@ def print_statistics(stat):
 
 if __name__ == '__main__':
 
-    pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - ' +\
-                r'\[\d{4}-[0-1]{1}[0-2]{1}-[0-3]{1}\d{1} ' +\
-                r'[0-2]{1}\d{1}:[0-5]{1}\d{1}:[0-5]{1}\d{1}.\d{6}\] ' +\
-                r'"GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
+    pattern = r'^(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})' +\
+                r'(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})){3} - ' +\
+                r'\[\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01]) ' +\
+                r'(?:[01]\d|2[0-3])(?::[0-5]\d){2}\.\d{6}\] ' +\
+                r'"GET /projects/260 HTTP/1\.1" (\d{3}) (\d+)$'
 
     status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
     stat = {'file_size': 0, 'line_no': 0}
@@ -49,7 +52,6 @@ if __name__ == '__main__':
             match = re.match(pattern, line)
             # skip line if it doesn't match pattern
             if match is None:
-                print('not matched')
                 continue
 
             # get matched groups tuple (status_code, file_size)
@@ -60,11 +62,11 @@ if __name__ == '__main__':
             if status_code not in status_codes:
                 continue
 
-            # increment count for status code and filesize and line number
+            # increment count for status code and filesize
             stat[status_code] = stat.get(status_code, 0) + 1
             stat['file_size'] += int(match_groups[1])
 
-        print_statistics(stat)
+        # print_statistics(stat)
 
     except KeyboardInterrupt as e:
         print_statistics(stat)
