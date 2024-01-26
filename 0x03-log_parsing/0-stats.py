@@ -68,6 +68,5 @@ if __name__ == '__main__':
 
         print_statistics(stat)
 
-    except KeyboardInterrupt as e:
+    except KeyboardInterrupt:
         print_statistics(stat)
-        raise
