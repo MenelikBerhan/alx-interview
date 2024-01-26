@@ -66,7 +66,7 @@ if __name__ == '__main__':
             stat[status_code] = stat.get(status_code, 0) + 1
             stat['file_size'] += int(match_groups[1])
 
-        # print_statistics(stat)
+        print_statistics(stat)
 
     except KeyboardInterrupt as e:
         print_statistics(stat)
