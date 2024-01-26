@@ -20,6 +20,14 @@ import re
 import sys
 
 
+def print_statistics(stat):
+    """Prints statistics summary for status codes."""
+    print('File size: {}'.format(stat["file_size"]))
+    for s in status_codes:
+        if s in stat:
+            print('{}: {}'.format(s, stat[s]))
+
+
 if __name__ == '__main__':
 
     pattern = r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3} - ' +\
@@ -28,12 +36,20 @@ if __name__ == '__main__':
                 r'"GET /projects/260 HTTP/1.1" (\d{3}) (\d+)$'
 
     status_codes = ['200', '301', '400', '401', '403', '404', '405', '500']
+    stat = {'file_size': 0, 'line_no': 0}
     try:
-        stat = {'file_size': 0, 'line_no': 0}
-        while True:
-            match = re.match(pattern, sys.stdin.readline())
+        for line in sys.stdin:
+            # if line number is a multiple of 10 print stat
+            if stat['line_no'] and stat['line_no'] % 10 == 0:
+                print_statistics(stat)
+
+            # increment count for line number
+            stat['line_no'] += 1
+
+            match = re.match(pattern, line)
             # skip line if it doesn't match pattern
             if match is None:
+                print('not matched')
                 continue
 
             # get matched groups tuple (status_code, file_size)
@@ -44,21 +60,12 @@ if __name__ == '__main__':
             if status_code not in status_codes:
                 continue
 
-            # increment count for status code, filesize and line number
+            # increment count for status code and filesize and line number
             stat[status_code] = stat.get(status_code, 0) + 1
             stat['file_size'] += int(match_groups[1])
-            stat['line_no'] += 1
 
-            # if line number is a multiple of 10 print stat
-            if stat['line_no'] and stat['line_no'] % 10 == 0:
-                print('File size: {}'.format(stat["file_size"]))
-                sorted_codes = [i for i in status_codes if i in stat]
-                for s in sorted_codes:
-                    print('{}: {}'.format(s, stat[s]))
+        print_statistics(stat)
 
     except KeyboardInterrupt as e:
-        print('File size: {}'.format(stat["file_size"]))
-        sorted_codes = [i for i in status_codes if i in stat]
-        for s in sorted_codes:
-            print('{}: {}'.format(s, stat[s]))
+        print_statistics(stat)
         raise
