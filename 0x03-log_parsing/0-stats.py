@@ -42,9 +42,6 @@ if __name__ == '__main__':
     stat = {'file_size': 0, 'line_no': 0}
     try:
         for line in sys.stdin:
-            # if line number is a multiple of 10 print stat
-            if stat['line_no'] and stat['line_no'] % 10 == 0:
-                print_statistics(stat)
 
             # increment count for line number
             stat['line_no'] += 1
@@ -57,14 +54,18 @@ if __name__ == '__main__':
             # get matched groups tuple (status_code, file_size)
             match_groups = match.groups()
 
-            # skip line if status code is not valid
-            status_code = match_groups[0]
-            if status_code not in status_codes:
-                continue
-
-            # increment count for status code and filesize
-            stat[status_code] = stat.get(status_code, 0) + 1
+            # increment filesize
             stat['file_size'] += int(match_groups[1])
+
+            # increment count for status code if its valid
+            status_code = match_groups[0]
+            if status_code in status_codes:
+                stat[status_code] = stat.get(status_code, 0) + 1
+
+            # if line number is 10 print stat and reset count
+            if stat['line_no'] == 10:
+                print_statistics(stat)
+                stat['line_no'] = 0
 
         print_statistics(stat)
 
