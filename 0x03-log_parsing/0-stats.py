@@ -51,14 +51,14 @@ if __name__ == '__main__':
 
             # if line number is a multiple of 10 print stat
             if stat['line_no'] and stat['line_no'] % 10 == 0:
-                print(f'File size: {stat["file_size"]}')
+                print('File size: {}'.format(stat["file_size"]))
                 sorted_codes = [i for i in status_codes if i in stat]
                 for s in sorted_codes:
-                    print(f'{s}: {stat[s]}')
+                    print('{}: {}'.format(s, stat[s]))
 
     except KeyboardInterrupt as e:
-        print(f'File size: {stat["file_size"]}')
+        print('File size: {}'.format(stat["file_size"]))
         sorted_codes = [i for i in status_codes if i in stat]
         for s in sorted_codes:
-            print(f'{s}: {stat[s]}')
+            print('{}: {}'.format(s, stat[s]))
         raise
