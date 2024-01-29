@@ -11,8 +11,8 @@ def validUTF8(data: 'list[int]') -> bool:
     Args:
         data: a list of integers where each integer represents 1 byte of data.
             A character in UTF-8 can be 1 to 4 bytes long and `data` can
-            contain multiple characters. Each integer represents 1 byte of data
-            and only the 8 least significant bits of each integer is used.
+            contain multiple characters. Only the 8 least significant bits of
+            each integer is used.
     Returns:
         bool: True if `data` is a valid UTF-8 encoding, else returns False.
     """
@@ -20,21 +20,20 @@ def validUTF8(data: 'list[int]') -> bool:
     if not data or not all([type(n) == int for n in data]):
         return False
 
-    # convert each no. in data to a binary of 8 bits (leading zeros added)
-    binary = []
+    # convert each no. in data to a binary of 8 bits
+    binary = []                     # list of 8 bit binary numbers string
     for n in data:
-        b = str(bin(n))
-        b = b[b.index('b') + 1:]    # remove leading '0b' prefix
+        b = str(bin(n))[2:]         # remove leading '0b' prefix
         if len(b) < 8:              # add leading zeros to make it 8 bit
             b = ('0' * (8 - len(b))) + b
         else:
             b = b[-8:]              # use the 8 least significant bits
         binary.append(b)
 
-    utf_1_byte = r'^(0[0,1]{7})$'
-    utf_2_byte = r'^(110[0,1]{5}10[0,1]{6})$'
-    utf_3_byte = r'^(1110[0,1]{4}10[0,1]{6}10[0,1]{6})$'
-    utf_4_byte = r'^(11110[0,1]{3}10[0,1]{6}10[0,1]{6}10[0,1]{6})$'
+    utf_1_byte = r'^0[0,1]{7}$'
+    utf_2_byte = r'^110[0,1]{5}10[0,1]{6}$'
+    utf_3_byte = r'^1110[0,1]{4}(?:10[0,1]{6}){2}$'
+    utf_4_byte = r'^11110[0,1]{3}(?:10[0,1]{6}){3}$'
 
     i = 0
     len_data = len(data)
