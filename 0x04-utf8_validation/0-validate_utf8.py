@@ -7,16 +7,17 @@ from re import match
 
 def validUTF8(data: 'list[int]') -> bool:
     """Determines if a given data set represents a valid UTF-8 encoding.
-    
+
     Args:
         data: a list of integers where each integer represents 1 byte of data.
             A character in UTF-8 can be 1 to 4 bytes long and `data` can
-            contain multiple characters. Each integer represents 1 byte of data, therefore only the 8 least significant bits of each integer is used.
+            contain multiple characters. Each integer represents 1 byte of data
+            and only the 8 least significant bits of each integer is used.
     Returns:
         bool: True if `data` is a valid UTF-8 encoding, else returns False.
     """
-    # if data doesn't contain list of non negative integers return False
-    if not data or not all([type(n) == int and n >= 0 for n in data]):
+    # if data doesn't contain list of integers return False
+    if not data or not all([type(n) == int for n in data]):
         return False
 
     # convert each no. in data to a binary of 8 bits (leading zeros added)
@@ -24,8 +25,8 @@ def validUTF8(data: 'list[int]') -> bool:
     for n in data:
         b = str(bin(n))
         b = b[b.index('b') + 1:]    # remove leading '0b' prefix
-        if len(b) < 8:
-            b = ('0' * (8 - len(b))) + b    # add leading zeros to make it 8 bit
+        if len(b) < 8:              # add leading zeros to make it 8 bit
+            b = ('0' * (8 - len(b))) + b
         else:
             b = b[-8:]              # use the 8 least significant bits
         binary.append(b)
@@ -49,5 +50,5 @@ def validUTF8(data: 'list[int]') -> bool:
             i += 4
         else:
             return False
-        
+
     return True
