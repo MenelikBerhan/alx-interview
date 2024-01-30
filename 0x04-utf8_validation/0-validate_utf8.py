@@ -23,13 +23,14 @@ def validUTF8(data: 'list[int]') -> bool:
     # convert each no. in data to a binary of 8 bits
     binary = []                     # list of 8 bit binary numbers string
     for n in data:
-        b = str(bin(n))[2:]         # remove leading '0b' prefix
+        # b = str(bin(n))[2:]
+        b = str(bin(n))
+        b = b[b.index('b') + 1:]      # remove leading '0b' prefix
         if len(b) < 8:              # add leading zeros to make it 8 bit
             b = ('0' * (8 - len(b))) + b
         else:
             b = b[-8:]              # use the 8 least significant bits
         binary.append(b)
-
     utf_1_byte = r'^0[0,1]{7}$'
     utf_2_byte = r'^110[0,1]{5}10[0,1]{6}$'
     utf_3_byte = r'^1110[0,1]{4}(?:10[0,1]{6}){2}$'
