@@ -13,11 +13,12 @@ def validUTF8(data: 'list[int]') -> bool:
             A character in UTF-8 can be 1 to 4 bytes long and `data` can
             contain multiple characters. Only the 8 least significant bits of
             each integer is used.
+
     Returns:
         bool: True if `data` is a valid UTF-8 encoding, else returns False.
     """
     # if data doesn't contain list of integers return False
-    if not data or not all([type(n) == int for n in data]):
+    if not data or not all([type(n) == int and n >= 0 for n in data]):
         return False
 
     # convert each no. in data to a binary of 8 bits
