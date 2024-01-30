@@ -23,18 +23,17 @@ def validUTF8(data: 'list[int]') -> bool:
     # convert each no. in data to a binary of 8 bits
     binary = []                     # list of 8 bit binary numbers string
     for n in data:
-        # b = str(bin(n))[2:]
-        b = str(bin(n))
-        b = b[b.index('b') + 1:]      # remove leading '0b' prefix
-        if len(b) < 8:              # add leading zeros to make it 8 bit
-            b = ('0' * (8 - len(b))) + b
-        else:
-            b = b[-8:]              # use the 8 least significant bits
+        n = -n if n < 0 else n      # to avoid '-' in binary representation
+        # get the 8 least significant bits and remove leading '0b' prefix,
+        # and add leading zeros if needed
+        b = bin(n & 0xff)[2:].zfill(8)
         binary.append(b)
+
+    # valid utf-8 encoding patterns for 1 - 4 byte caharacters
     utf_1_byte = r'^0[0,1]{7}$'
-    utf_2_byte = r'^110[0,1]{5}10[0,1]{6}$'
-    utf_3_byte = r'^1110[0,1]{4}(?:10[0,1]{6}){2}$'
-    utf_4_byte = r'^11110[0,1]{3}(?:10[0,1]{6}){3}$'
+    utf_2_byte = r'^110([0,1]{5})10([0,1]{6})$'
+    utf_3_byte = r'^1110([0,1]{4})10([0,1]{6})10([0,1]{6})$'
+    utf_4_byte = r'^11110([0,1]{3})10([0,1]{6})10([0,1]{6})10([0,1]{6})$'
 
     i = 0
     len_data = len(data)
@@ -42,12 +41,28 @@ def validUTF8(data: 'list[int]') -> bool:
     while i < len_data:
         if match(utf_1_byte, binary[i]):
             i += 1
+
         elif i + 1 < len_data and match(utf_2_byte, "".join(binary[i: i + 2])):
+            utf = match(utf_2_byte, "".join(binary[i: i + 2])).groups()
+            utf_value = int("".join(utf), 2)
+            if utf_value < 0x0080:      # overlong encoding
+                return False
             i += 2
+
         elif i + 2 < len_data and match(utf_3_byte, "".join(binary[i: i + 3])):
+            utf = match(utf_3_byte, "".join(binary[i: i + 3])).groups()
+            utf_value = int("".join(utf), 2)
+            if utf_value < 0x0800:      # overlong encoding
+                return False
             i += 3
+
         elif i + 3 < len_data and match(utf_4_byte, "".join(binary[i: i + 4])):
+            utf = match(utf_4_byte, "".join(binary[i: i + 4])).groups()
+            utf_value = int("".join(utf), 2)
+            if utf_value < 0x10000:     # overlong encoding
+                return False
             i += 4
+
         else:
             return False
 
