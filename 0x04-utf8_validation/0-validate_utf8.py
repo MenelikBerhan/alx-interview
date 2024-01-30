@@ -3,9 +3,10 @@
 UTF-8 Validation function
 """
 from re import match
+from typing import List
 
 
-def validUTF8(data: 'list[int]') -> bool:
+def validUTF8(data: List[int]) -> bool:
     """Determines if a given data set represents a valid UTF-8 encoding.
 
     Args:
@@ -18,7 +19,7 @@ def validUTF8(data: 'list[int]') -> bool:
         bool: True if `data` is a valid UTF-8 encoding, else returns False.
     """
     # if data doesn't contain list of integers return False
-    if not data or not all([type(n) == int and n >= 0 for n in data]):
+    if not data or not all([type(n) == int for n in data]):
         return False
 
     # convert each no. in data to a binary of 8 bits
