@@ -19,7 +19,7 @@ def validUTF8(data: List[int]) -> bool:
         bool: True if `data` is a valid UTF-8 encoding, else returns False.
     """
     # if data doesn't contain list of integers return False
-    if not data or not all([type(n) == int for n in data]):
+    if not data or not all([type(n) == int and 0 <= n < 256 for n in data]):
         return False
 
     # convert each no. in data to a binary of 8 bits
