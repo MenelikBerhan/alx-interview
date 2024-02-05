@@ -1,0 +1,146 @@
+#!/usr/bin/python3
+"""The N queens puzzle solution
+"""
+from sys import argv
+from typing import List, Union
+
+
+
+def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
+        -> Union[int, None]:
+    """Finds the first safe column (not attacked by already placed queens)
+    in last row or in a new row to be added.
+
+    Args:
+        candidate: A candidate solution. A list of column indices of
+            queens ordered by row.
+        n: number of queens to place in an `n` by `n` board.
+        new_row: if True find safe column in new row for adding new queen,
+            else find safe column in last row to move last queen to right.
+
+    Returns:
+        (int | None): the index of the safe column, else None.
+    """
+    # index of row in which the safe column is searched
+    current_row = len(candidate) if new_row else len(candidate) - 1
+
+    unsafe_columns = set()
+    for row, col in enumerate(candidate):
+        # skip last row if queen is to be moved in last row
+        if row == current_row:
+            continue
+        unsafe_columns.add(col)     # under attack by vertical move
+
+        # columns in `current_row` under attack by diagonal moves
+        diagonal_left = col - (current_row - row)
+        diagonal_right = col + (current_row - row)
+
+        # if index in range add to unsafe set
+        for diag in (diagonal_left, diagonal_right):
+            if 0 <= diag < n:
+                unsafe_columns.add(diag)
+
+    # all columns are unsafe
+    if len(unsafe_columns) == n:
+        return None
+
+    # start of safe column search index. Start from 0 for placing queen in
+    # new row, and for moving queen, search after column of queen in last row
+    start_col = candidate[-1] + 1 if not new_row else 0
+
+    # find first column (moving left to right) not in `unsafe_columns`
+    safe_columns = set(range(start_col, n)).difference(unsafe_columns)
+    if safe_columns:
+        return safe_columns.pop()
+    return None
+
+
+def first(candidate: List[int], n: int) -> Union[List[int], None]:
+    """Adds a new row and places a queen at the first available column.
+
+    Args:
+        candidate: A candidate solution. A list of column indices of
+            queens ordered by row.
+        n: number of queens to place in an `n` by `n` board.
+
+    Returns:
+        (List[int] | None): a new candidate with added row if a queen
+            can be placed in a new row, else None.
+    """
+    # place queen at column 0 of first row
+    if candidate == []:
+        # candidate.append(0)
+        return candidate + [0]
+
+    # find next safe column in new next row and if any, place new queen there
+    next_column = find_safe_column(candidate, n, new_row=True)
+    if next_column is None:
+        return None
+
+    # place queen in a new added row
+    # candidate.append(next_column)
+    return candidate + [next_column]
+
+
+def next(candidate: List[int], n: int) -> Union[List[int], None]:
+    """Moves queen in the last row to the next available column in the same row
+
+    Args:
+        candidate: A candidate solution. A list of column indices of
+            queens for each row.
+        n: number of queens to place in an `n` by `n` board.
+
+    Returns:
+        (List[int] | None): returns a new candidate if the queen in last 
+        row can be moved to next valid column in same row, else None.
+    """
+    # no column after current positon of queen in last row
+    if candidate[-1] == n - 1:
+        return None
+
+    # if only one row move queen to next column (no other queens)
+    if len(candidate) == 1:
+        new_candidate = candidate[:]
+        new_candidate[0] += 1
+        return new_candidate
+
+    # find next safe column in last row
+    next_column = find_safe_column(candidate, n)
+    if next_column is None:
+        return None
+
+    # move queen in last row to new safe column in same row
+    new = candidate[:]
+    new[-1] = next_column
+    return new
+
+
+def backtrack(n: int, candidate: List[int] = []):
+    """
+    Using the bactrack algorithm, prints solutions to the N queens puzzle. It
+    places `n` no. of queens in non-attacking positions in an `n` by `n` board.
+
+    Args:
+        candidate: A candidate solution. A list of column indices of
+            queens for each row.
+        n (minimum 4): number of queens to place in an `n` by `n` board.
+
+    Note:
+        A solution is a list of row and column indices for `n` number of
+        queens. There may be more than one solution for given `n`.
+    """
+    if len(candidate) == n:  # all `n` queens placed
+        print(candidate)
+        print([[row, col] for row, col in enumerate(candidate)])
+        return              # can not extend solution
+
+    # place queen on next row at first available column
+    candidate = first(candidate, n)
+    while candidate is not None:
+        # search solution in a DFS manner using recursion
+        backtrack(n, candidate)
+        # move queen on last row to next available column in same row
+        candidate = next(candidate, n)
+
+
+backtrack(5)
