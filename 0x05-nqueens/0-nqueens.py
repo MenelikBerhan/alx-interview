@@ -118,8 +118,7 @@ def backtrack(n: int, candidate: List[int] = []):
         queens. There may be more than one solution for given `n`.
     """
     if len(candidate) == n:  # all `n` queens placed
-        print(candidate)
-        # print([[row, col] for row, col in enumerate(candidate)])
+        print([[row, col] for row, col in enumerate(candidate)])
         return              # can not extend solution
 
     # place queen on next row at first available column
