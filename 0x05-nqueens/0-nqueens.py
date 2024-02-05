@@ -36,10 +36,6 @@ def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
         diagonals = {d for d in (diag_left, diag_right) if d in range(0, n)}
         unsafe_columns.update(diagonals)
 
-    # all columns are unsafe
-    if len(unsafe_columns) == n:
-        return None
-
     # start of safe column search index. Start from 0 for placing queen in
     # new row, and for moving queen, search after column of queen in last row
     start_col = candidate[-1] + 1 if not new_row else 0
@@ -63,10 +59,6 @@ def first(candidate: List[int], n: int) -> Union[List[int], None]:
         (List[int] | None): a new candidate with added row if a queen
             can be placed in a new row, else None.
     """
-    # place queen at column 0 of first row
-    if candidate == []:
-        return candidate + [0]
-
     # find next safe column in new next row and if any, place new queen there
     next_column = find_safe_column(candidate, n, new_row=True)
     if next_column is None:
@@ -88,10 +80,6 @@ def next(candidate: List[int], n: int) -> Union[List[int], None]:
         (List[int] | None): returns a new candidate if the queen in last
         row can be moved to next valid column in same row, else None.
     """
-    # no column after current positon of queen in last row
-    if candidate[-1] == n - 1:
-        return None
-
     # find next safe column in last row
     next_column = find_safe_column(candidate, n)
     if next_column is None:
