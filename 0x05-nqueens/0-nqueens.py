@@ -86,9 +86,7 @@ def next(candidate: List[int], n: int) -> Union[List[int], None]:
         return None
 
     # move queen in last row to new safe column in same row
-    new = candidate[:]
-    new[-1] = next_column
-    return new
+    return candidate[:-1] + [next_column]
 
 
 def backtrack(n: int, candidate: List[int] = []):
@@ -116,3 +114,21 @@ def backtrack(n: int, candidate: List[int] = []):
         backtrack(n, candidate)
         # move queen on last row to next available column in same row
         candidate = next(candidate, n)
+
+
+if __name__ == '__main__':
+    if len(argv) != 2:
+        print('Usage: nqueens N')
+        exit(1)
+
+    n = argv[1]
+    if not n.isdecimal():
+        print('N must be a number')
+        exit(1)
+
+    n = int(n)
+    if n < 4:
+        print('N must be at least 4')
+        exit(1)
+
+    backtrack(n)
