@@ -5,7 +5,6 @@ from sys import argv
 from typing import List, Union
 
 
-
 def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
         -> Union[int, None]:
     """Finds the first safe column (not attacked by already placed queens)
@@ -26,19 +25,16 @@ def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
 
     unsafe_columns = set()
     for row, col in enumerate(candidate):
-        # skip last row if queen is to be moved in last row
+        # skip last row if queen is to be moved with in last row
         if row == current_row:
             continue
         unsafe_columns.add(col)     # under attack by vertical move
 
         # columns in `current_row` under attack by diagonal moves
-        diagonal_left = col - (current_row - row)
-        diagonal_right = col + (current_row - row)
-
-        # if index in range add to unsafe set
-        for diag in (diagonal_left, diagonal_right):
-            if 0 <= diag < n:
-                unsafe_columns.add(diag)
+        diag_left = col - (current_row - row)
+        diag_right = col + (current_row - row)
+        diagonals = {d for d in (diag_left, diag_right) if d in range(0, n)}
+        unsafe_columns.update(diagonals)
 
     # all columns are unsafe
     if len(unsafe_columns) == n:
@@ -69,7 +65,6 @@ def first(candidate: List[int], n: int) -> Union[List[int], None]:
     """
     # place queen at column 0 of first row
     if candidate == []:
-        # candidate.append(0)
         return candidate + [0]
 
     # find next safe column in new next row and if any, place new queen there
@@ -78,7 +73,6 @@ def first(candidate: List[int], n: int) -> Union[List[int], None]:
         return None
 
     # place queen in a new added row
-    # candidate.append(next_column)
     return candidate + [next_column]
 
 
@@ -91,18 +85,12 @@ def next(candidate: List[int], n: int) -> Union[List[int], None]:
         n: number of queens to place in an `n` by `n` board.
 
     Returns:
-        (List[int] | None): returns a new candidate if the queen in last 
+        (List[int] | None): returns a new candidate if the queen in last
         row can be moved to next valid column in same row, else None.
     """
     # no column after current positon of queen in last row
     if candidate[-1] == n - 1:
         return None
-
-    # if only one row move queen to next column (no other queens)
-    if len(candidate) == 1:
-        new_candidate = candidate[:]
-        new_candidate[0] += 1
-        return new_candidate
 
     # find next safe column in last row
     next_column = find_safe_column(candidate, n)
@@ -131,7 +119,7 @@ def backtrack(n: int, candidate: List[int] = []):
     """
     if len(candidate) == n:  # all `n` queens placed
         print(candidate)
-        print([[row, col] for row, col in enumerate(candidate)])
+        # print([[row, col] for row, col in enumerate(candidate)])
         return              # can not extend solution
 
     # place queen on next row at first available column
@@ -141,6 +129,3 @@ def backtrack(n: int, candidate: List[int] = []):
         backtrack(n, candidate)
         # move queen on last row to next available column in same row
         candidate = next(candidate, n)
-
-
-backtrack(5)
