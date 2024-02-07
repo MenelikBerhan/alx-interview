@@ -120,13 +120,13 @@ if __name__ == '__main__':
     if len(argv) != 2:
         print('Usage: nqueens N')
         exit(1)
-
     n = argv[1]
-    if not n.isdecimal():
+    try:
+        n = int(n)
+    except Exception:
         print('N must be a number')
         exit(1)
 
-    n = int(n)
     if n < 4:
         print('N must be at least 4')
         exit(1)
