@@ -5,7 +5,7 @@ from sys import argv
 from typing import List, Generator, Union
 
 
-def find_safe_column(candidate: List[int], n: int) -> List[int]:
+def find_safe_columns(candidate: List[int], n: int) -> List[int]:
     """Finds list of safe columns (not attacked by already placed queens)
     in a new row to be added.
 
@@ -50,7 +50,7 @@ def extend(candidate: List[int], n: int) -> Generator[List[int], None, None]:
         candidate by moving the queen in the last row to the next safe column.
     """
     # find safe columns in the new row to be added
-    next_columns = find_safe_column(candidate, n)
+    next_columns = find_safe_columns(candidate, n)
     for next_column in next_columns:
         # place queen in a newly added row and move to right
         yield candidate + [next_column]
