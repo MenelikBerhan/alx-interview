@@ -2,11 +2,10 @@
 """The N queens puzzle solution
 """
 from sys import argv
-from typing import List, Union
+# from typing import List, Union
 
 
-def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
-        -> Union[int, None]:
+def find_safe_column(candidate, n, new_row=False):
     """Finds the first safe column (not attacked by already placed queens)
     in last row or in a new row to be added.
 
@@ -47,7 +46,7 @@ def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
     return None
 
 
-def first(candidate: List[int], n: int) -> Union[List[int], None]:
+def first(candidate, n):
     """Adds a new row and places a queen at the first available column.
 
     Args:
@@ -68,7 +67,7 @@ def first(candidate: List[int], n: int) -> Union[List[int], None]:
     return candidate + [next_column]
 
 
-def next(candidate: List[int], n: int) -> Union[List[int], None]:
+def next(candidate, n):
     """Moves queen in the last row to the next available column in the same row
 
     Args:
@@ -89,7 +88,7 @@ def next(candidate: List[int], n: int) -> Union[List[int], None]:
     return candidate[:-1] + [next_column]
 
 
-def backtrack(n: int, candidate: List[int] = []):
+def backtrack(n, candidate=[]):
     """
     Using the bactrack algorithm, prints solutions to the N queens puzzle. It
     places `n` no. of queens in non-attacking positions in an `n` by `n` board.
