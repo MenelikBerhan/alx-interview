@@ -41,12 +41,12 @@ def find_safe_column(candidate: List[int], n: int, new_row: bool = False)\
     start_col = candidate[-1] + 1 if not new_row else 0
 
     # find first column (moving left to right) not in `unsafe_columns`
-    # safe_columns = set(range(start_col, n)).difference(unsafe_columns)
     if len(unsafe_columns) == n:
         return None
     for c in range(start_col, n):
         if c not in unsafe_columns:
             return c
+    return None
 
 
 def first(candidate: List[int], n: int) -> Union[List[int], None]:
@@ -106,23 +106,26 @@ def backtrack(n: int, candidate: List[int] = [], b=False):
         queens. There may be more than one solution for given `n`.
     """
     t = '\t' * len(candidate)
-    # print(f'{t}START: {candidate}')
+    print(f'{t}START: {candidate}')     # for Debug
+
     if len(candidate) == n:  # all `n` queens placed
         print(t, [[row, col] for row, col in enumerate(candidate)])
         return              # can not extend solution
-    # tmp = candidate
+    
+    tmp = candidate     # for Debug
     # place queen on next row at first available column
     candidate = first(candidate, n)
     while candidate is not None:
-        # t = '\t' * len(candidate)
-        # print(f'{t}Loop: {candidate}')
+        t = '\t' * len(candidate)
+        print(f'{t}Loop: {candidate}')  # for Debug
+
         # search solution in a DFS manner using recursion
         backtrack(n, candidate)
         # move queen on last row to next available column in same row
         candidate = next(candidate, n)
 
-    # t = '\t' * len(tmp)
-    # print(f'{t}RETURNED AFTER LOOP: {tmp}')
+    t = '\t' * len(tmp)
+    print(f'{t}RETURNED AFTER LOOP: {tmp}') # for Debug
 
 
 if __name__ == '__main__':
