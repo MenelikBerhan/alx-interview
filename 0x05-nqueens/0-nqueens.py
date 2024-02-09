@@ -2,7 +2,7 @@
 """The N queens puzzle solution
 """
 from sys import argv
-from typing import List, Generator, Union
+from typing import List, Generator
 
 
 def find_safe_columns(candidate: List[int], n: int) -> List[int]:
@@ -32,7 +32,7 @@ def find_safe_columns(candidate: List[int], n: int) -> List[int]:
 
     # find safe columns ordered by index
     safe_columns = set(range(n)).difference(unsafe_columns)
-    return list(safe_columns)
+    return sorted(list(safe_columns))
 
 
 def extend(candidate: List[int], n: int) -> Generator[List[int], None, None]:
@@ -86,14 +86,12 @@ if __name__ == '__main__':
         print('Usage: nqueens N')
         exit(1)
 
-    n = argv[1]
     try:
-        n = int(n)
+        n = int(argv[1])
     except ValueError:
         print('N must be a number')
         exit(1)
 
-    n = int(n)
     if n < 4:
         print('N must be at least 4')
         exit(1)
