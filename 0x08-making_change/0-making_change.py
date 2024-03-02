@@ -9,7 +9,7 @@ def makeChange(coins, total):
     def helper(coins, total, taken=[], memo={}):
         """helper for main function"""
         if len(coins) == 1 and total % coins[0] == 0:
-            return taken + ([coins] * total // coins[0])
+            return taken + ([coins] * (total // coins[0]))
         # key = str(total) + ':' + ','.join(coins)
         # if key in memo:
         #     return taken + memo[key]
