@@ -1,9 +1,11 @@
+#!/usr/bin/python3
 """Making Change puzzle solution
 using GeeksforGeeks tutorials:
 https://www.geeksforgeeks.org/find-minimum-number-of-coins-that-make-a-change/
 """
 # A Dynamic Programming based Python3 program to
 # find minimum of coins to make a given change V
+import sys
 
 
 # m is size of coins array (number of
