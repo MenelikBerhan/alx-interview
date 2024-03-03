@@ -1,50 +1,45 @@
-#!/usr/bin/python3
-"""Make Change puzzle solution
+"""Making Change puzzle
 """
+# A Dynamic Programming based Python3 program to
+# find minimum of coins to make a given change V
+import sys
 
 
+# m is size of coins array (number of
+# different coins)
 def makeChange(coins, total):
-    """Finds no. coins that add up to `total`."""
-
-    def helper(coins, total, taken=[], memo={}):
-        """helper for main function"""
-        if len(coins) == 1 and total % coins[0] == 0:
-            return taken + ([coins] * (total // coins[0]))
-        # key = str(total) + ':' + ','.join(coins)
-        # if key in memo:
-        #     return taken + memo[key]
-        solutions = []
-        for i, coin in enumerate(coins):
-            if total == coin:
-                solutions.append(taken + [coin])
-                break
-            if coin < total:
-                i_tmp = i
-                while (i_tmp < len(coins) and coins[i_tmp] > (total - coin)):
-                    i_tmp += 1
-                if i_tmp < len(coins):
-                    c_tmp = coins[i_tmp:]
-                    t_tmp = taken + [coin]
-                    tot_t = total - coin
-                    # key_t = str(tot_t) + ':' + ','.join(c_tmp)
-                    # if key_t in memo:
-                    #     solution = memo[key_t]
-                    solution = helper(c_tmp, tot_t, t_tmp, memo)
-                    if solution is not None:
-                        solutions.append(solution)
-        best_sol = None
-        # best_len = -1
-        for sol in solutions:
-            if best_sol is None:
-                best_sol = sol
-            elif len(best_sol) > len(sol):
-                best_sol = sol
-        return best_sol
-
-    if total <= 0:
+    """Finds the no. of coins needed to make change for `total`,
+    using a greedy alortihm that uses dynamic programming.
+    If change couldn't be made returns -1.
+    """
+    if total <=0:
         return 0
-    coins.sort(reverse=True)
-    ans = helper(coins, total)
-    if ans is None:
+    m = len(coins)
+    # table[i] will be storing the minimum
+    # number of coins required for i value.
+    # So table[V] will have result
+    table = [0 for i in range(total + 1)]
+
+    # Base case (If given value V is 0)
+    table[0] = 0
+
+    # Initialize all table values as Infinite
+    for i in range(1, total + 1):
+        table[i] = sys.maxsize
+
+    # Compute minimum coins required
+    # for all values from 1 to V
+    for i in range(1, total + 1):
+
+        # Go through all coins smaller than i
+        for j in range(m):
+            if (coins[j] <= i):
+                sub_res = table[i - coins[j]]
+                if (sub_res != sys.maxsize and
+                        sub_res + 1 < table[i]):
+                    table[i] = sub_res + 1
+
+    if table[total] == sys.maxsize:
         return -1
-    return len(ans)
+
+    return table[total]
