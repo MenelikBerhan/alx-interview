@@ -10,13 +10,16 @@ import sys
 
 # m is size of coins array (number of
 # different coins)
-def makeChange(coins, total):
+def makeChange(coins: 'list[int]', total, memo={}):
     """Finds the no. of coins needed to make change for `total`,
     using a greedy alortihm that uses dynamic programming.
     If change couldn't be made returns -1.
     """
     if total <= 0:
         return 0
+    key = str(total) + ':' + ','.join(map(str, coins))
+    if key in memo:
+        return memo[key]
     m = len(coins)
     coins.sort(reverse=True)
     # table[i] will be storing the minimum
@@ -43,6 +46,7 @@ def makeChange(coins, total):
                     table[i] = sub_res + 1
 
     if table[total] == sys.maxsize:
+        memo[key] = -1
         return -1
-
+    memo[key] = table[total]
     return table[total]
