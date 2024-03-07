@@ -21,8 +21,7 @@ Perimeter of a Grid
         [0, 1, 1, 1, 0, 0],
         [0, 0, 0, 0, 0, 0]
     ]
-  >>> print(island_perimeter(grid))
-  >>> 12
+  print(island_perimeter(grid)) == 12
 """
 
 
@@ -32,14 +31,18 @@ def island_perimeter(grid):
     for r in range(len(grid) - 1):      # stop before last row (all zero)
         curr_row = grid[r]
         nxt_row = grid[r + 1]
+        # print(f'start: {perimeter}')
+        # print(f'curr:{curr_row}')
+        # print(f'nxxt:{nxt_row}')
         # for horizontal edges b/n current row and the one below,
         # add one to perimeter for each grid[r] + grid[r + 1] == 1
         perimeter += list(map(lambda x, y: x + y, curr_row, nxt_row)).count(1)
-
+        # print(f'after horiz update: {perimeter}')
         # for vertical edges b/n cells in current row,
         # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1
         perimeter += list(map(lambda x, y: x + y, curr_row, curr_row[1:])).\
             count(1)
+        # print(f'after vert update: {perimeter}')
     return perimeter
 
 
