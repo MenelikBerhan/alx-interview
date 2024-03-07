@@ -15,13 +15,13 @@ Perimeter of a Grid
 
   Eg.
     grid = [
-        [0, 0, 0, 0, 0, 0],
         [0, 1, 0, 0, 0, 0],
         [0, 1, 0, 0, 0, 0],
-        [0, 1, 1, 1, 0, 0],
+        [0, 1, 0, 0, 0, 0],
+        [1, 1, 1, 1, 0, 0],
         [0, 0, 0, 0, 0, 0]
     ]
-  print(island_perimeter(grid)) == 12
+  print(island_perimeter(grid)) == 16
 """
 
 
