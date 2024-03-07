@@ -27,10 +27,10 @@ Perimeter of a Grid
 
 def island_perimeter(grid):
     """Returns the perimeter of the island described in grid."""
-    perimeter = 0
-    for r in range(len(grid) - 1):      # stop before last row (all zero)
+    perimeter = grid[0].count(1)
+    for r in range(len(grid)):      # stop before last row (all zero)
         curr_row = grid[r]
-        nxt_row = grid[r + 1]
+        nxt_row = [0] * len(grid[r]) if r == len(grid) - 1 else grid[r + 1]
         # print(f'start: {perimeter}')
         # print(f'curr:{curr_row}')
         # print(f'nxxt:{nxt_row}')
@@ -40,8 +40,9 @@ def island_perimeter(grid):
         # print(f'after horiz update: {perimeter}')
         # for vertical edges b/n cells in current row,
         # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1
-        perimeter += list(map(lambda x, y: x + y, curr_row, curr_row[1:])).\
-            count(1)
+        perimeter += list(
+            map(lambda x, y: x + y, [0] + curr_row, curr_row + [0])
+            ).count(1)
         # print(f'after vert update: {perimeter}')
     return perimeter
 
