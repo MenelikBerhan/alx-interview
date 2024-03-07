@@ -40,7 +40,7 @@ def island_perimeter(grid):
         # print(f'after horiz update: {perimeter}')
         # for vertical edges b/n cells in current row,
         # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1
-        perimeter += list(map(lambda x, y: x + y, curr_row, curr_row[1:])).\
+        perimeter += list(map(lambda x, y: x + y, curr_row[:-1], curr_row[1:])).\
             count(1)
         # print(f'after vert update: {perimeter}')
     return perimeter
