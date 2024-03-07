@@ -27,38 +27,54 @@ Perimeter of a Grid
 
 def island_perimeter(grid):
     """Returns the perimeter of the island described in grid."""
-    perimeter = grid[0].count(1)
-    for r in range(len(grid)):      # stop before last row (all zero)
+    perimeter = grid[0].count(1)    # top horizontal edges of cells in 1st row
+    for r in range(len(grid)):
         curr_row = grid[r]
-        nxt_row = [0] * len(grid[r]) if r == len(grid) - 1 else grid[r + 1]
-        # print(f'start: {perimeter}')
-        # print(f'curr:{curr_row}')
-        # print(f'nxxt:{nxt_row}')
+        # set list of zeros as nxt_row for last row
+        nxt_row = grid[r + 1] if r < len(grid) - 1 else [0] * len(grid[r])
+
         # for horizontal edges b/n current row and the one below,
         # add one to perimeter for each grid[r] + grid[r + 1] == 1
         perimeter += list(map(lambda x, y: x + y, curr_row, nxt_row)).count(1)
-        # print(f'after horiz update: {perimeter}')
+
         # for vertical edges b/n cells in current row,
         # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1
         perimeter += list(
             map(lambda x, y: x + y, [0] + curr_row, curr_row + [0])
-            ).count(1)
-        # print(f'after vert update: {perimeter}')
+            ).count(1)        # add with zero for 1st & last cell in curr_row
+
+        # to exit loop if edge of island is reached
+        if perimeter and nxt_row.count(1) == 0:
+            break
     return perimeter
 
 
 """ # map overkill
-def island_perimeter(grid: 'list[list[int]]') -> int:
-    def map_function(curr_row, nxt_row):s
+def island_perimeter(grid):
+    # Returns the perimeter of the island described in grid.
+    def map_function(curr_row, nxt_row):
+        # Returns total length of horizontal edges b/n current & nxt row,
+        # and vertical edges b/n each cell in current row.
         perimeter = 0
         # for horizontal edges b/n current row and the one below,
         # add one to perimeter for each grid[r] + grid[r + 1] == 1
         perimeter += list(map(lambda x, y: x + y, curr_row, nxt_row)).count(1)
 
         # for vertical edges b/n cells in current row,
-        # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1
-    perimeter += list(map(lambda x, y: x + y, curr_row, curr_row[1:])).count(1)
+        # add one to perimeter for each grid[r][i] + grid[r][i + 1] == 1.
+        # (add with zero for 1st & last cell in curr_row)
+        perimeter += list(
+            map(lambda x, y: x + y, [0] + curr_row, curr_row + [0])
+        ).count(1)
 
         return perimeter
 
-    return sum(map(map_function, grid[:-1], grid[1:])) """
+    # sum edges found b/n rows and b/n cells in rows
+    return sum(
+        map(
+            map_function,
+            [[0] * len(grid[0])] + grid,    # add row of zeros before 1st row &
+            grid + [[0] * len(grid[0])]     # after last row, for horizontal
+        )                                   # edges in 1st & last row
+    )
+ """
