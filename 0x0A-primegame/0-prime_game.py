@@ -61,29 +61,28 @@ def isWinner(x: int, nums: 'list[int]') -> str:
         return 'Ben'
     return None     # equal rounds won
 
+    """Prime Game Puzzle
+    Maria and Ben are playing a game. Given a set of consecutive integers
+    starting from `1` up to and including `n`, they take turns choosing a prime
+    number from the set and removing that number and its multiples from the
+    set. The player that cannot make a move loses the game.
 
-"""Prime Game Puzzle Solution
-Maria and Ben are playing a game. Given a set of consecutive integers starting
-from `1` up to and including `n`, they take turns choosing a prime number from
-the set and removing that number and its multiples from the set. The player
-that cannot make a move loses the game.
+    They play `x` rounds of the game, where `n` may be different for each
+    round. Assuming Maria always goes first and both players play optimally,
+    determine who the winner of each game is.
+    """
 
-They play `x` rounds of the game, where `n` may be different for each round.
-Assuming Maria always goes first and both players play optimally,
-determine who the winner of each game is.
-"""
+    """Sieve of Eratosthenes algorithm for finding list of prime no.s <= n
+        input: an integer n > 1.
+        output: all prime numbers from 2 through n.
 
-"""Sieve of Eratosthenes algorithm for finding list of prime no.s <= n
-    input: an integer n > 1.
-    output: all prime numbers from 2 through n.
+        let A be an array of Boolean values, indexed by integers 2 to n,
+        initially all set to true.
 
-    let A be an array of Boolean values, indexed by integers 2 to n,
-    initially all set to true.
+        for i = 2, 3, 4, ..., not exceeding √n do
+            if A[i] is true
+                for j = i2, i2+i, i2+2i, i2+3i, ..., not exceeding n do
+                    set A[j] := false
 
-    for i = 2, 3, 4, ..., not exceeding √n do
-        if A[i] is true
-            for j = i2, i2+i, i2+2i, i2+3i, ..., not exceeding n do
-                set A[j] := false
-
-    return all i such that A[i] is true.
-"""
+        return all i such that A[i] is true.
+    """
