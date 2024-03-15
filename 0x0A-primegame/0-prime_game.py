@@ -48,7 +48,7 @@ def isWinner(x: int, nums: 'list[int]') -> str:
     #   the player who goes second win, else the player who goes first win.
     # For each round maria always goes first.
 
-    memo = {} # to save <n>:<winner> key value pair
+    memo = {}       # to save <n>:<winner> key value pair
     rounds_won_by_ben = rounds_won_by_maria = 0
     for n in nums:
         if n in memo:       # return from memo
