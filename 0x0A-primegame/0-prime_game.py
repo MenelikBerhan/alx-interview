@@ -47,13 +47,24 @@ def isWinner(x: int, nums: 'list[int]') -> str:
     #   only number 1 remains. Therefore if primes list length is even,
     #   the player who goes second win, else the player who goes first win.
     # For each round maria always goes first.
+
+    memo = {} # to save <n>:<winner> key value pair
     rounds_won_by_ben = rounds_won_by_maria = 0
     for n in nums:
+        if n in memo:       # return from memo
+            if memo[n] == 'Ben':
+                rounds_won_by_ben += 1
+            else:
+                rounds_won_by_maria += 1
+            continue
+
         primes_list = find_prime(n)
         if (len(primes_list) % 2 == 0):  # primes list length is even, Ben wins
             rounds_won_by_ben += 1
+            memo[n] = 'Ben'
         else:
             rounds_won_by_maria += 1  # primes list length is odd, Maria wins
+            memo[n] = 'Maria'
 
     if rounds_won_by_maria > rounds_won_by_ben:
         return 'Maria'
