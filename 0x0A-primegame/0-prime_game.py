@@ -70,7 +70,6 @@ def isWinner(x: int, nums: 'list[int]') -> str:
   rounds_won_by_ben = rounds_won_by_maria = 0
   for n in nums:
     primes_list = find_prime(n)
-    print(f'for n = {n}, primes: {primes_list}')
     if (len(primes_list) % 2 == 0): # primes list length is even, Ben wins
       rounds_won_by_ben += 1
     else:
